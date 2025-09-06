@@ -1,7 +1,7 @@
 {
     "domain": "assist_traces",
     "name": "Assist Traces",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "documentation": "https://example.com/assist_traces",
     "requirements": [
         "orjson>=3.10",
