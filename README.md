@@ -2,7 +2,7 @@
 
 Assist Traces is a custom [Home Assistant](https://www.home-assistant.io/) integration that records full Assist pipeline runs for building fine-tuning datasets.
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ConstructorFleet&repository=Assist-Tuning&category=integration)
+[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Teagan42&repository=Assist-Tuning&category=integration)
 [![Add to Home Assistant](https://my.home-assistant.io/badges/add-integration.svg)](https://my.home-assistant.io/redirect/config_flow_start?domain=assist_traces)
 
 ## Installation
