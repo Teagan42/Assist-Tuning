@@ -16,14 +16,16 @@ from .const import (
     DEFAULT_REDACTION,
     DEFAULT_SINK_DIR,
 )
-from .correlator import Correlator
-from .services import async_setup_services
-from .websocket import async_setup_ws
-from .writer import TraceWriter, WriterConfig
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up assist_traces from a config entry."""
+    from .correlator import Correlator
+    from .pipeline import async_setup_pipeline_tracing
+    from .services import async_setup_services
+    from .websocket import async_setup_ws
+    from .writer import TraceWriter, WriterConfig
+
     hass.data.setdefault(DOMAIN, {})
     hass.data.setdefault(DATA_TRACES, {})
 
@@ -39,6 +41,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         CONF_REDACTION_LEVEL, DEFAULT_REDACTION
     )
 
+    await async_setup_pipeline_tracing(hass)
     await async_setup_services(hass)
     await async_setup_ws(hass)
     await hass.config_entries.async_setup_platforms(entry, ["sensor"])

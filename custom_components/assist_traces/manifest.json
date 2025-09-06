@@ -1,18 +1,18 @@
 {
-  "domain": "assist_traces",
-  "name": "Assist Traces",
-  "version": "0.1.1",
-  "documentation": "https://example.com/assist_traces",
-  "requirements": [
-    "orjson>=3.10",
-    "ujson>=5.9",
-    "pydantic>=2.7",
-    "aioboto3>=12.4",
-    "async-timeout",
-    "nats-py>=2.6",
-    "redis>=5.0"
-  ],
-  "codeowners": ["@ConstructorFleet"],
-  "iot_class": "local_polling",
-  "config_flow": true
+    "domain": "assist_traces",
+    "name": "Assist Traces",
+    "version": "0.2.5",
+    "documentation": "https://example.com/assist_traces",
+    "requirements": [
+        "orjson>=3.10",
+        "ujson>=5.9",
+        "pydantic>=2.7",
+        "aioboto3>=12.4",
+        "async-timeout",
+        "nats-py>=2.6",
+        "redis>=5.0",
+    ],
+    "codeowners": ["@ConstructorFleet"],
+    "iot_class": "local_polling",
+    "config_flow": true,
 }
