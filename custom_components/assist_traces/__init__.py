@@ -44,12 +44,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await async_setup_pipeline_tracing(hass)
     await async_setup_services(hass)
     await async_setup_ws(hass)
-    await hass.config_entries.async_setup_platforms(entry, ["sensor"])
+    await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload assist_traces config entry."""
     await hass.data[DATA_WRITER].stop()
-    await hass.config_entries.async_unload_platforms(entry, ["sensor"])
-    return True
+    return await hass.config_entries.async_unload_platforms(entry, ["sensor"])

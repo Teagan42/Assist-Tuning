@@ -5,6 +5,9 @@ from __future__ import annotations
 import pytest
 import sys
 import types
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 from homeassistant.core import HomeAssistant
 import pytest_asyncio
@@ -91,8 +94,8 @@ def event_loop():
 class MockConfigEntries:
     """Minimal stand-in for Home Assistant's config entries manager."""
 
-    async def async_setup_platforms(self, entry, platforms):
-        """Pretend to set up platforms for the given entry."""
+    async def async_forward_entry_setups(self, entry, platforms):
+        """Pretend to forward setups for the given entry."""
         return True
 
     async def async_unload_platforms(self, entry, platforms):
