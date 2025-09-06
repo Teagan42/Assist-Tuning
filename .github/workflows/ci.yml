@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: pip install homeassistant pytest pytest-asyncio
+        run: pip install -e .[test]
       - name: Run tests
         run: |
           PYTHONPATH=. pytest custom_components/assist_traces/tests -q
