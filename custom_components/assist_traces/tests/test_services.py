@@ -1,6 +1,7 @@
 """Service tests are skipped due to missing dependencies."""
 
 import gzip
+import json
 import pytest
 import sys
 from types import SimpleNamespace
