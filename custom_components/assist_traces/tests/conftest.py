@@ -6,15 +6,20 @@ import pytest
 import sys
 import types
 
-from homeassistant.core import HomeAssistant
 import pytest_asyncio
+from homeassistant.core import HomeAssistant
+import hassil.recognize as hassil_recognize
 
 # Stub hass_nabucasa to avoid heavy dependencies
 sys.modules.setdefault("hass_nabucasa", types.ModuleType("hass_nabucasa"))
 sys.modules.setdefault("hass_nabucasa.remote", types.ModuleType("remote"))
 sys.modules.setdefault("hass_nabucasa.acme", types.ModuleType("acme"))
-
-pytest_plugins = ("pytest_asyncio",)
+home_intents = types.ModuleType("home_assistant_intents")
+home_intents.ErrorKey = Exception
+home_intents.get_intents = lambda: {}
+home_intents.get_languages = lambda: []
+sys.modules.setdefault("home_assistant_intents", home_intents)
+setattr(hassil_recognize, "UnmatchedRangeEntity", type("UnmatchedRangeEntity", (), {}))
 
 
 @pytest.fixture

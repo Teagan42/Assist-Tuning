@@ -4,7 +4,6 @@ import gzip
 import json
 
 import pytest
-
 from custom_components.assist_traces import async_setup_entry
 from custom_components.assist_traces.const import DATA_TRACES, DOMAIN
 from custom_components.assist_traces.tests.conftest import MockConfigEntry
@@ -12,6 +11,12 @@ from custom_components.assist_traces.tests.conftest import MockConfigEntry
 
 @pytest.mark.asyncio
 async def test_log_event_and_feedback(hass, tmp_path):
+    import types, sys
+
+    stub = types.ModuleType("custom_components.assist_traces.pipeline")
+    stub.setup_pipeline_tracing = lambda hass: None
+    sys.modules["custom_components.assist_traces.pipeline"] = stub
+
     entry = MockConfigEntry(options={})
     await async_setup_entry(hass, entry)
 

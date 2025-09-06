@@ -39,6 +39,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         CONF_REDACTION_LEVEL, DEFAULT_REDACTION
     )
 
+    from .pipeline import setup_pipeline_tracing
+
+    setup_pipeline_tracing(hass)
     await async_setup_services(hass)
     await async_setup_ws(hass)
     await hass.config_entries.async_setup_platforms(entry, ["sensor"])
