@@ -129,6 +129,7 @@ sys.modules.setdefault("hass_nabucasa", types.ModuleType("hass_nabucasa"))
 sys.modules.setdefault("hass_nabucasa.remote", types.ModuleType("remote"))
 sys.modules.setdefault("hass_nabucasa.acme", types.ModuleType("acme"))
 
+# Stub hassil required by Home Assistant's conversation component
 hassil = types.ModuleType("hassil")
 hassil.__path__ = []  # type: ignore[attr-defined]
 expression = types.ModuleType("hassil.expression")
@@ -173,7 +174,6 @@ intents.WildcardSlotList = WildcardSlotList
 sys.modules.setdefault("hassil", hassil)
 sys.modules.setdefault("hassil.expression", expression)
 sys.modules.setdefault("hassil.intents", intents)
-
 vol = types.ModuleType("voluptuous")
 vol.Schema = lambda schema: schema
 vol.Required = lambda key, default=None: key

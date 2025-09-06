@@ -1,5 +1,56 @@
 """Service tests are skipped due to missing dependencies."""
 
 import pytest
+import sys
+from types import SimpleNamespace
 
-pytest.skip("services require pydantic and full HA", allow_module_level=True)
+from custom_components.assist_traces import async_setup_entry
+from custom_components.assist_traces.const import DATA_TRACES, DOMAIN
+from custom_components.assist_traces.tests.conftest import MockConfigEntry
+
+
+@pytest.mark.asyncio
+async def test_log_event_and_feedback(hass, tmp_path):
+    async def _noop(hass):
+        """Stub pipeline setup to avoid heavy imports."""
+
+    sys.modules["custom_components.assist_traces.pipeline"] = SimpleNamespace(
+        async_setup_pipeline_tracing=_noop
+    )
+    entry = MockConfigEntry(options={})
+    await async_setup_entry(hass, entry)
+
+    trace = {"trace_id": "abc", "ts": "2024-06-01T00:00:00", "model": "m"}
+    await hass.services.async_call(DOMAIN, "log_event", {"trace": trace}, blocking=True)
+    await hass.services.async_call(
+        DOMAIN,
+        "log_event",
+        {
+            "trace": {
+                "trace_id": "abc",
+                "ts": "2024-06-01T00:00:00",
+                "model": "m",
+                "response_text": "ok",
+            }
+        },
+        blocking=True,
+    )
+    assert hass.data[DATA_TRACES]["abc"]["response_text"] == "ok"
+
+    await hass.services.async_call(
+        DOMAIN, "set_feedback", {"trace_id": "abc", "feedback": "up"}, blocking=True
+    )
+    assert hass.data[DATA_TRACES]["abc"]["user_feedback"] == "up"
+
+    out_path = tmp_path / "out.jsonl.gz"
+    await hass.services.async_call(
+        DOMAIN,
+        "export_sft",
+        {"output_path": str(out_path), "dedup": "none"},
+        blocking=True,
+    )
+    assert out_path.exists()
+    with gzip.open(out_path, "rb") as f:
+        line = f.readline()
+        row = json.loads(line)
+    assert row["instruction"] is None
