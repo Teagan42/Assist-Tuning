@@ -12,5 +12,6 @@ dependencies = [
 [project.optional-dependencies]
 test = [
   "homeassistant==2024.6.0",
+  "pytest",
   "pytest-asyncio",
 ]
