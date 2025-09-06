@@ -38,6 +38,15 @@ async def test_pipeline_from_text_traced(hass):
     sys.modules["homeassistant.components"] = components
     sys.modules["homeassistant.components.assist_pipeline"] = assist_pipeline
 
+    # Ensure previous tests don't leave wrapped pipeline functions
+    setattr(
+        assist_pipeline.async_pipeline_from_audio_stream,
+        "_assist_traces_wrapped",
+        False,
+    )
+    setattr(assist_pipeline.async_pipeline_from_text, "_assist_traces_wrapped", False)
+
+    sys.modules.pop("custom_components.assist_traces.pipeline", None)
     pipeline_module = importlib.import_module(
         "custom_components.assist_traces.pipeline"
     )
