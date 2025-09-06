@@ -41,7 +41,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await async_setup_services(hass)
     await async_setup_ws(hass)
-    hass.config_entries.async_setup_platforms(entry, ["sensor"])
+    await hass.config_entries.async_setup_platforms(entry, ["sensor"])
     return True
 
 

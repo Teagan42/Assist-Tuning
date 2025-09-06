@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from homeassistant.core import HomeAssistant, callback
 
@@ -17,22 +17,26 @@ class Correlator:
         """Initialize the correlator."""
         self.hass = hass
         self.window = window
-        self.pending: Dict[str, Dict[str, List[str]]] = {}
+        self.pending: Dict[str, Dict[str, Any]] = {}
         self._listener = hass.bus.async_listen("state_changed", self._on_state)
 
     async def add_trace(self, trace_id: str, entity_ids: List[str]) -> None:
         """Register a trace to watch for state changes."""
-        self.pending[trace_id] = {"entities": entity_ids}
-        self.hass.loop.create_task(self._timeout(trace_id))
+        task = asyncio.create_task(self._timeout(trace_id))
+        self.pending[trace_id] = {"entities": entity_ids, "task": task}
 
     async def _timeout(self, trace_id: str) -> None:
         """Mark a trace as failed if no matching state change occurs."""
-        await asyncio.sleep(self.window)
+        try:
+            await asyncio.sleep(self.window)
+        except asyncio.CancelledError:
+            return
+
         if trace_id in self.pending:
             trace = self.hass.data[DATA_TRACES].get(trace_id)
             if trace:
                 trace["result"] = "fail"
-            del self.pending[trace_id]
+            self.pending.pop(trace_id, None)
 
     @callback
     def _on_state(self, event) -> None:
@@ -43,4 +47,7 @@ class Correlator:
                 trace = self.hass.data[DATA_TRACES].get(trace_id)
                 if trace:
                     trace["result"] = "success"
+                task = info.get("task")
+                if task:
+                    task.cancel()
                 del self.pending[trace_id]
