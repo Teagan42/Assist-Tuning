@@ -1,0 +1,5 @@
+{
+  "name": "Assist Traces",
+  "domains": ["assist_traces"],
+  "render_readme": true
+}
