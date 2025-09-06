@@ -19,6 +19,8 @@ hassil = types.ModuleType("hassil")
 hassil.__path__ = []  # type: ignore[attr-defined]
 expression = types.ModuleType("hassil.expression")
 intents = types.ModuleType("hassil.intents")
+recognize = types.ModuleType("hassil.recognize")
+util = types.ModuleType("hassil.util")
 
 
 class Expression:  # noqa: D401
@@ -59,6 +61,20 @@ intents.WildcardSlotList = WildcardSlotList
 sys.modules.setdefault("hassil", hassil)
 sys.modules.setdefault("hassil.expression", expression)
 sys.modules.setdefault("hassil.intents", intents)
+recognize.MISSING_ENTITY = None
+recognize.RecognizeResult = object
+recognize.UnmatchedTextEntity = object
+recognize.UnmatchedRangeEntity = object
+recognize.recognize_all = lambda *args, **kwargs: []
+recognize.PUNCTUATION = ""
+sys.modules.setdefault("hassil.recognize", recognize)
+util.merge_dict = lambda a, b: {**a, **b}
+sys.modules.setdefault("hassil.util", util)
+home_assistant_intents = types.ModuleType("home_assistant_intents")
+home_assistant_intents.ErrorKey = object
+home_assistant_intents.get_intents = lambda *args, **kwargs: {}
+home_assistant_intents.get_languages = lambda: []
+sys.modules.setdefault("home_assistant_intents", home_assistant_intents)
 
 
 @pytest.fixture
