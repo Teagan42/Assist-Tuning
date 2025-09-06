@@ -5,4 +5,6 @@
   - Patch for documentation and backward-compatible bug fixes.
   - Minor for new features.
   - Major for breaking changes.
-- Run `ruff check .` and `pytest` before committing.
+- Document all classes and methods with docstrings.
+- Run `ruff format .` and `ruff check .` before committing.
+- Run `pytest --cov` and ensure coverage is at least 85% before committing.
