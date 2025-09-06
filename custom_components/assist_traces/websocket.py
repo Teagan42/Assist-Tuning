@@ -14,17 +14,20 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
 
     @websocket_api.websocket_command({"type": f"{DOMAIN}/preview_recent", "limit": int})
     async def preview_recent(hass: HomeAssistant, connection, msg):
+        """Return the most recent traces."""
         limit = msg.get("limit", 25)
         traces = list(hass.data[DATA_TRACES].values())[-limit:]
         connection.send_result(msg["id"], traces)
 
     @websocket_api.websocket_command({"type": f"{DOMAIN}/trace_by_id", "trace_id": str})
     async def trace_by_id(hass: HomeAssistant, connection, msg):
+        """Return a single trace by its ID."""
         trace = hass.data[DATA_TRACES].get(msg["trace_id"])  # type: ignore[index]
         connection.send_result(msg["id"], trace)
 
     @websocket_api.websocket_command({"type": f"{DOMAIN}/stats"})
     async def stats(hass: HomeAssistant, connection, msg):
+        """Return statistics about recent traces."""
         traces = list(hass.data[DATA_TRACES].values())
         counts: Dict[str, int] = {}
         latency = []

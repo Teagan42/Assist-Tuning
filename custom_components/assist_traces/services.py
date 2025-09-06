@@ -15,6 +15,7 @@ from .redact import redact
 
 
 def _merge(existing: Dict[str, Any], update: Dict[str, Any]) -> None:
+    """Shallow-merge two dictionaries for trace updates."""
     for k, v in update.items():
         if isinstance(v, dict) and isinstance(existing.get(k), dict):
             _merge(existing[k], v)
@@ -25,7 +26,10 @@ def _merge(existing: Dict[str, Any], update: Dict[str, Any]) -> None:
 
 
 async def async_setup_services(hass: HomeAssistant) -> None:
+    """Register Home Assistant services for assist_traces."""
+
     async def log_event(call: ServiceCall) -> None:
+        """Handle assist_traces.log_event service."""
         payload: Dict[str, Any] = call.data.get("trace", {})
         trace = AssistTrace.model_validate(payload).model_dump(mode="json")
         traces = hass.data.setdefault(DATA_TRACES, {})
@@ -51,6 +55,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             await hass.data[DOMAIN]["correlator"].add_trace(trace["trace_id"], entity_ids)  # type: ignore[index]
 
     async def set_feedback(call: ServiceCall) -> None:
+        """Handle assist_traces.set_feedback service."""
         trace_id = call.data["trace_id"]
         trace = hass.data[DATA_TRACES].get(trace_id)
         if trace:
@@ -59,6 +64,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             trace["gold_action"] = call.data.get("gold_action")
 
     async def export_sft(call: ServiceCall) -> None:
+        """Handle assist_traces.export_sft service."""
         output_path = call.data.get("output_path") or f"/config/assist_traces/datasets/sft-{datetime.utcnow():%Y%m%d}.jsonl.gz"
         traces = list(hass.data[DATA_TRACES].values())
         rows = []
@@ -79,6 +85,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
                 f.write(line.encode() + b"\n")
 
     async def export_prefs(call: ServiceCall) -> None:
+        """Handle assist_traces.export_prefs service."""
         output_path = call.data.get("output_path") or f"/config/assist_traces/datasets/prefs-{datetime.utcnow():%Y%m%d}.jsonl.gz"
         traces = list(hass.data[DATA_TRACES].values())
         rows = []
@@ -97,6 +104,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
                 f.write(json.dumps(line).encode() + b"\n")
 
     async def flush(call: ServiceCall) -> None:
+        """Handle assist_traces.flush service."""
         await hass.data[DATA_WRITER].flush()
 
     hass.services.async_register(DOMAIN, "log_event", log_event)

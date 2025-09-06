@@ -18,12 +18,14 @@ STRICT_KEYS = {"user", "owner", "household_members", "user_id"}
 
 
 def _redact_string(text: str, patterns: Dict[str, re.Pattern]) -> str:
+    """Replace occurrences of patterns in a string with tokens."""
     for token, pattern in patterns.items():
         text = pattern.sub(token, text)
     return text
 
 
 def _redact_recursive(data: Any, patterns: Dict[str, re.Pattern], names: Iterable[str]) -> Any:
+    """Recursively redact strings within nested structures."""
     if isinstance(data, str):
         red = _redact_string(data, patterns)
         for idx, name in enumerate(names):

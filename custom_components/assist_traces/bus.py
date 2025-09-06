@@ -8,14 +8,17 @@ class BusPublisher:
     """Very small stub publisher used in tests."""
 
     def __init__(self, config: Dict[str, Any]) -> None:
+        """Initialize the publisher with a config dictionary."""
         self.config = config
         self.type = config.get("type", "none")
         self.published: List[Dict[str, Any]] = []
 
     async def publish(self, trace: Dict[str, Any]) -> None:
+        """Publish a trace to the configured backend."""
         if self.type == "none":
             return
         self.published.append(trace)
 
     async def close(self) -> None:
+        """Close any open resources for the publisher."""
         return

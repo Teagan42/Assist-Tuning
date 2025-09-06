@@ -1,4 +1,7 @@
+"""WebSocket API tests."""
 from __future__ import annotations
+
+# ruff: noqa: E402
 
 import pytest
 import sys
@@ -7,8 +10,6 @@ import types
 # Stub hass_nabucasa to avoid heavy deps
 sys.modules.setdefault("hass_nabucasa", types.ModuleType("hass_nabucasa"))
 sys.modules.setdefault("hass_nabucasa.remote", types.ModuleType("remote"))
-
-from homeassistant.components import websocket_api
 
 from custom_components.assist_traces.const import DATA_TRACES, DOMAIN
 from custom_components.assist_traces.websocket import async_setup_ws

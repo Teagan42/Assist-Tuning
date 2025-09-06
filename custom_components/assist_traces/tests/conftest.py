@@ -6,6 +6,7 @@ import sys
 import types
 
 from homeassistant.core import HomeAssistant
+import pytest_asyncio
 
 # Stub hass_nabucasa to avoid heavy dependencies
 sys.modules.setdefault("hass_nabucasa", types.ModuleType("hass_nabucasa"))
@@ -36,9 +37,6 @@ class MockConfigEntries:
 class MockConfigEntry:
     def __init__(self, options=None):
         self.options = options or {}
-
-
-import pytest_asyncio
 
 
 @pytest_asyncio.fixture
