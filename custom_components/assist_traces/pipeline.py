@@ -57,3 +57,4 @@ async def async_setup_pipeline_tracing(hass: HomeAssistant) -> None:
         assist_pipeline.async_pipeline_from_text = _wrap(
             assist_pipeline.async_pipeline_from_text
         )
+        assist_pipeline.async_pipeline_from_text._assist_traces_wrapped = True
