@@ -4,6 +4,8 @@ import gzip
 import json
 
 import pytest
+import sys
+from types import SimpleNamespace
 
 from custom_components.assist_traces import async_setup_entry
 from custom_components.assist_traces.const import DATA_TRACES, DOMAIN
@@ -12,6 +14,12 @@ from custom_components.assist_traces.tests.conftest import MockConfigEntry
 
 @pytest.mark.asyncio
 async def test_log_event_and_feedback(hass, tmp_path):
+    async def _noop(hass):
+        """Stub pipeline setup to avoid heavy imports."""
+
+    sys.modules["custom_components.assist_traces.pipeline"] = SimpleNamespace(
+        async_setup_pipeline_tracing=_noop
+    )
     entry = MockConfigEntry(options={})
     await async_setup_entry(hass, entry)
 

@@ -14,6 +14,52 @@ sys.modules.setdefault("hass_nabucasa", types.ModuleType("hass_nabucasa"))
 sys.modules.setdefault("hass_nabucasa.remote", types.ModuleType("remote"))
 sys.modules.setdefault("hass_nabucasa.acme", types.ModuleType("acme"))
 
+# Stub hassil required by Home Assistant's conversation component
+hassil = types.ModuleType("hassil")
+hassil.__path__ = []  # type: ignore[attr-defined]
+expression = types.ModuleType("hassil.expression")
+intents = types.ModuleType("hassil.intents")
+
+
+class Expression:  # noqa: D401
+    """Placeholder for hassil.expression.Expression."""
+
+
+class ListReference:  # noqa: D401
+    """Placeholder for hassil.expression.ListReference."""
+
+
+class Sequence:  # noqa: D401
+    """Placeholder for hassil.expression.Sequence."""
+
+
+class Intents:  # noqa: D401
+    """Placeholder for hassil.intents.Intents."""
+
+
+class SlotList:  # noqa: D401
+    """Placeholder for hassil.intents.SlotList."""
+
+
+class TextSlotList:  # noqa: D401
+    """Placeholder for hassil.intents.TextSlotList."""
+
+
+class WildcardSlotList:  # noqa: D401
+    """Placeholder for hassil.intents.WildcardSlotList."""
+
+
+expression.Expression = Expression
+expression.ListReference = ListReference
+expression.Sequence = Sequence
+intents.Intents = Intents
+intents.SlotList = SlotList
+intents.TextSlotList = TextSlotList
+intents.WildcardSlotList = WildcardSlotList
+sys.modules.setdefault("hassil", hassil)
+sys.modules.setdefault("hassil.expression", expression)
+sys.modules.setdefault("hassil.intents", intents)
+
 
 @pytest.fixture
 def event_loop():
