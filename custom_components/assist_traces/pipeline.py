@@ -23,10 +23,12 @@ async def async_setup_pipeline_tracing(hass: HomeAssistant) -> None:
     original = assist_pipeline.async_pipeline_from_audio_stream
 
     async def traced_async_pipeline_from_audio_stream(*args, event_callback, **kwargs):
+        """Capture pipeline events while delegating to the original implementation."""
         trace: Dict[str, Any] = {"events": []}
         trace_id = uuid.uuid4().hex
 
         def _capture(event: assist_pipeline.PipelineEvent) -> None:
+            """Store each pipeline event and dispatch to the original callback."""
             trace.setdefault("ts", event.timestamp)
             trace["events"].append(
                 {
@@ -46,5 +48,7 @@ async def async_setup_pipeline_tracing(hass: HomeAssistant) -> None:
 
         return await original(*args, event_callback=_capture, **kwargs)
 
-    assist_pipeline.async_pipeline_from_audio_stream = traced_async_pipeline_from_audio_stream
+    assist_pipeline.async_pipeline_from_audio_stream = (
+        traced_async_pipeline_from_audio_stream
+    )
     assist_pipeline.async_pipeline_from_audio_stream._assist_traces_wrapped = True
