@@ -1,0 +1,24 @@
+{
+  "title": "Assist Traces",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Assist Traces",
+        "data": {
+          "enabled": "Enabled",
+          "redaction_level": "Redaction Level"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "enabled": "Enabled",
+          "redaction_level": "Redaction Level"
+        }
+      }
+    }
+  }
+}
