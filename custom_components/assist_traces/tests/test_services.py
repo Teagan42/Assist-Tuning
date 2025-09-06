@@ -20,12 +20,21 @@ async def test_log_event_and_feedback(hass, tmp_path):
     await hass.services.async_call(
         DOMAIN,
         "log_event",
-        {"trace": {"trace_id": "abc", "ts": "2024-06-01T00:00:00", "model": "m", "response_text": "ok"}},
+        {
+            "trace": {
+                "trace_id": "abc",
+                "ts": "2024-06-01T00:00:00",
+                "model": "m",
+                "response_text": "ok",
+            }
+        },
         blocking=True,
     )
     assert hass.data[DATA_TRACES]["abc"]["response_text"] == "ok"
 
-    await hass.services.async_call(DOMAIN, "set_feedback", {"trace_id": "abc", "feedback": "up"}, blocking=True)
+    await hass.services.async_call(
+        DOMAIN, "set_feedback", {"trace_id": "abc", "feedback": "up"}, blocking=True
+    )
     assert hass.data[DATA_TRACES]["abc"]["user_feedback"] == "up"
 
     out_path = tmp_path / "out.jsonl.gz"

@@ -1,4 +1,5 @@
 """Telemetry sensors for assist_traces."""
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta
@@ -13,7 +14,9 @@ from .const import DATA_TRACES
 class AssistTracesSensor(Entity):
     """Simple diagnostic sensor for trace statistics."""
 
-    def __init__(self, hass: HomeAssistant, name: str, func: Callable[[], float]) -> None:
+    def __init__(
+        self, hass: HomeAssistant, name: str, func: Callable[[], float]
+    ) -> None:
         """Initialize sensor with name and callback."""
         self._hass = hass
         self._attr_name = name
@@ -36,7 +39,9 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities) -> N
 
     async_add_entities(
         [
-            AssistTracesSensor(hass, "assist_traces_count_24h", lambda: len(recent_traces())),
+            AssistTracesSensor(
+                hass, "assist_traces_count_24h", lambda: len(recent_traces())
+            ),
             AssistTracesSensor(
                 hass,
                 "assist_traces_fail_rate_24h",

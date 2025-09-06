@@ -1,4 +1,5 @@
 """Trace correlator to determine result from HA state changes."""
+
 from __future__ import annotations
 
 import asyncio

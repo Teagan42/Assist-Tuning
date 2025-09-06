@@ -1,4 +1,5 @@
 """WebSocket API for assist_traces."""
+
 from __future__ import annotations
 
 from typing import Dict
@@ -32,7 +33,9 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
         counts: Dict[str, int] = {}
         latency = []
         for tr in traces:
-            counts[tr.get("result", "unknown")] = counts.get(tr.get("result", "unknown"), 0) + 1
+            counts[tr.get("result", "unknown")] = (
+                counts.get(tr.get("result", "unknown"), 0) + 1
+            )
             latency.append(tr.get("latency_ms", 0))
         summary = {
             "counts": counts,

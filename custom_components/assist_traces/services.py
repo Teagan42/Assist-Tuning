@@ -1,4 +1,5 @@
 """Service handlers for assist_traces."""
+
 from __future__ import annotations
 
 import gzip
@@ -52,7 +53,9 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             else:
                 entity_ids.append(eids)
         if entity_ids:
-            await hass.data[DOMAIN]["correlator"].add_trace(trace["trace_id"], entity_ids)  # type: ignore[index]
+            await hass.data[DOMAIN]["correlator"].add_trace(
+                trace["trace_id"], entity_ids
+            )  # type: ignore[index]
 
     async def set_feedback(call: ServiceCall) -> None:
         """Handle assist_traces.set_feedback service."""
@@ -65,7 +68,10 @@ async def async_setup_services(hass: HomeAssistant) -> None:
 
     async def export_sft(call: ServiceCall) -> None:
         """Handle assist_traces.export_sft service."""
-        output_path = call.data.get("output_path") or f"/config/assist_traces/datasets/sft-{datetime.utcnow():%Y%m%d}.jsonl.gz"
+        output_path = (
+            call.data.get("output_path")
+            or f"/config/assist_traces/datasets/sft-{datetime.utcnow():%Y%m%d}.jsonl.gz"
+        )
         traces = list(hass.data[DATA_TRACES].values())
         rows = []
         for tr in traces:
@@ -86,7 +92,10 @@ async def async_setup_services(hass: HomeAssistant) -> None:
 
     async def export_prefs(call: ServiceCall) -> None:
         """Handle assist_traces.export_prefs service."""
-        output_path = call.data.get("output_path") or f"/config/assist_traces/datasets/prefs-{datetime.utcnow():%Y%m%d}.jsonl.gz"
+        output_path = (
+            call.data.get("output_path")
+            or f"/config/assist_traces/datasets/prefs-{datetime.utcnow():%Y%m%d}.jsonl.gz"
+        )
         traces = list(hass.data[DATA_TRACES].values())
         rows = []
         for tr in traces:

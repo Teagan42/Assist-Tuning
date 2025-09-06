@@ -12,5 +12,7 @@ async def test_flow(hass):
     flow.hass = hass
     result = await flow.async_step_user()
     assert result["type"] == "form"
-    result2 = await flow.async_step_user({CONF_ENABLED: True, CONF_REDACTION_LEVEL: "basic"})
+    result2 = await flow.async_step_user(
+        {CONF_ENABLED: True, CONF_REDACTION_LEVEL: "basic"}
+    )
     assert result2["type"] == "create_entry"

@@ -9,7 +9,14 @@ from custom_components.assist_traces.correlator import Correlator
 
 @pytest.mark.asyncio
 async def test_correlator_success(hass):
-    hass.data[DATA_TRACES] = {"1": {"trace_id": "1", "ts": "2024-06-01T00:00:00", "model": "m", "result": "unknown"}}
+    hass.data[DATA_TRACES] = {
+        "1": {
+            "trace_id": "1",
+            "ts": "2024-06-01T00:00:00",
+            "model": "m",
+            "result": "unknown",
+        }
+    }
     correlator = Correlator(hass, window=1)
     await correlator.add_trace("1", ["light.kitchen"])
     hass.bus.async_fire("state_changed", {"entity_id": "light.kitchen"})
@@ -19,7 +26,14 @@ async def test_correlator_success(hass):
 
 @pytest.mark.asyncio
 async def test_correlator_fail(hass):
-    hass.data[DATA_TRACES] = {"2": {"trace_id": "2", "ts": "2024-06-01T00:00:00", "model": "m", "result": "unknown"}}
+    hass.data[DATA_TRACES] = {
+        "2": {
+            "trace_id": "2",
+            "ts": "2024-06-01T00:00:00",
+            "model": "m",
+            "result": "unknown",
+        }
+    }
     correlator = Correlator(hass, window=0.1)
     await correlator.add_trace("2", ["light.kitchen"])
     await correlator._timeout("2")

@@ -1,4 +1,5 @@
 """WebSocket API tests."""
+
 from __future__ import annotations
 
 # ruff: noqa: E402

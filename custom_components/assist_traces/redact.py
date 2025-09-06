@@ -1,4 +1,5 @@
 """Redaction utilities."""
+
 from __future__ import annotations
 
 import re
@@ -11,7 +12,7 @@ BASIC_PATTERNS = {
     "<MAC>": re.compile(r"\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b"),
     "<URL>": re.compile(r"https?://\S+"),
     "<SSID>": re.compile(r"ssid-\w+", re.IGNORECASE),
-    "<ADDR>": re.compile(r"\d{1,4} [A-Za-z0-9 .]{3,}")
+    "<ADDR>": re.compile(r"\d{1,4} [A-Za-z0-9 .]{3,}"),
 }
 
 STRICT_KEYS = {"user", "owner", "household_members", "user_id"}
@@ -24,7 +25,9 @@ def _redact_string(text: str, patterns: Dict[str, re.Pattern]) -> str:
     return text
 
 
-def _redact_recursive(data: Any, patterns: Dict[str, re.Pattern], names: Iterable[str]) -> Any:
+def _redact_recursive(
+    data: Any, patterns: Dict[str, re.Pattern], names: Iterable[str]
+) -> Any:
     """Recursively redact strings within nested structures."""
     if isinstance(data, str):
         red = _redact_string(data, patterns)
@@ -46,7 +49,9 @@ def _redact_recursive(data: Any, patterns: Dict[str, re.Pattern], names: Iterabl
     return data
 
 
-def redact(data: Dict[str, Any], level: str, known_names: Iterable[str] | None = None) -> Dict[str, Any]:
+def redact(
+    data: Dict[str, Any], level: str, known_names: Iterable[str] | None = None
+) -> Dict[str, Any]:
     """Redact PII from dictionary."""
     if level == "none":
         return data

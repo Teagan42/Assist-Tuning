@@ -1,4 +1,5 @@
 """Constants for assist_traces integration."""
+
 from __future__ import annotations
 
 DOMAIN = "assist_traces"

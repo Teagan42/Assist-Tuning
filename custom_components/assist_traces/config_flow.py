@@ -1,4 +1,5 @@
 """Config flow for assist_traces."""
+
 from __future__ import annotations
 
 import voluptuous as vol
@@ -60,4 +61,3 @@ class AssistTracesOptionsFlow(config_entries.OptionsFlow):
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)
-

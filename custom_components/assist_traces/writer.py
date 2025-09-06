@@ -1,4 +1,5 @@
 """Async trace writer."""
+
 from __future__ import annotations
 
 import asyncio
@@ -74,7 +75,12 @@ class TraceWriter:
     def _partition_path(self, trace: Dict[str, Any]) -> Path:
         """Return the partitioned path for a trace."""
         ts: datetime = datetime.fromisoformat(trace["ts"]).replace(tzinfo=None)
-        parts = [self.config.directory, f"{ts.year:04d}", f"{ts.month:02d}", f"{ts.day:02d}"]
+        parts = [
+            self.config.directory,
+            f"{ts.year:04d}",
+            f"{ts.month:02d}",
+            f"{ts.day:02d}",
+        ]
         if self.config.partitioning == PARTITION_HOURLY:
             parts.append(f"{ts.hour:02d}")
         model = trace.get("model", "unknown")
